@@ -1,4 +1,10 @@
-# signal-profile-updater
+# Signal Profile Updater
+This repository was made for some personal fun :D
+The objective of the application updates every day the profile picture of my Signal profile, it is done by generating a profile picture by choosing a random word from a custom word list and then using that word as a query to downloading a picture from Unsplash via it's API.  
+After editing the picture by drawing the chosen word, the number of days from first deployment, the last profile update's date, and a signature "PxHoussem", the application will update the Signal profile's picture.
+
+## Requirements
+- The Signal API docker container should be running locally: https://github.com/bbernhard/signal-cli-rest-api
 
 ## Build the image
 ```bash
