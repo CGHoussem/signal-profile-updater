@@ -4,7 +4,8 @@ The objective of the application updates every day the profile picture of my Sig
 After editing the picture by drawing the chosen word, the number of days from first deployment, the last profile update's date, and a signature "PxHoussem", the application will update the Signal profile's picture.
 
 ## Requirements
-- The Signal API docker container should be running locally: https://github.com/bbernhard/signal-cli-rest-api
+- The Signal API docker container must be running locally: https://github.com/bbernhard/signal-cli-rest-api
+- The phone number should be registered with the Signal API docker container (checkout [source](https://github.com/bbernhard/signal-cli-rest-api) on how to do so)
 
 ## Build the image
 ```bash
