@@ -5,12 +5,12 @@ from io import BytesIO
 import datetime
 import random 
 
-WORD_LIST = ("Love", "Allah", "Alhamdulillah", "Islam", "Peace", "Fake World", "AI", "Automation", "Houssem",
+WORD_LIST = ("Love", "Allah", "Alhamdulillah", "Islam", "Peace", "Fake World", "AI", "Deception", "Houssem",
              "Rym", "Chastity", "Respect", "Clarity", "Achieve", "Persistence", "Truth", "Family",
-             "Determination", "Passion", "Positivity", "Patience", "Strength", "Dare", "Confidence", "Wealth",
+             "Determination", "Passion", "Positivity", "Patience", "Strength", "Confidence", "Wealth",
              "Heaven", "Honor", "Hell", "Intelligence", "Creativity", "Righteousness", "Knowledge", "Wisdom",
-             "Majesty", "Mindfulness", "Resilience", "Raspberry PI", "Sincerity", "Enemy", "Friend", 
-             "Timeless", "The End", "Endless", "Darkness", "Children")
+             "Majesty", "Mindfulness", "Resilience", "Sincerity", "Culture", "Death", "Destiny",
+             "Timeless", "The End", "Endless", "Darkness", "Children", "Mistery", "Battlefield")
 chosen_word = random.choice(WORD_LIST)
 
 ## get an image from unsplash
@@ -22,7 +22,11 @@ headers = {
 }
 query = f"{chosen_word} wallpaper"
 if chosen_word == "Rym":
-    query = "travel wallpaper"
+	query = "Travel wallpaper"
+elif chosen_word == "Houssem":
+	query = "Nebula wallpaper"
+elif chosen_word == "Alhamdulillah":
+	query = "Allah wallpaper"
 params = {
     "query": query,
 }
@@ -56,10 +60,10 @@ cropped_img = original_img.crop((left, top, right, bottom))
 cropped_img = cropped_img.resize(size=(500, 500), resample=Image.Resampling.BICUBIC)
 
 ## blur image
-blurred_image = cropped_img.filter(ImageFilter.GaussianBlur(radius=3))
+blurred_image = cropped_img.filter(ImageFilter.GaussianBlur(radius=2))
 
 # Check if the image is too bright
-brightness_threshold = 50
+brightness_threshold = 100
 brightness = ImageStat.Stat(blurred_image.convert("L")).mean[0]
 if brightness > brightness_threshold:
     # If the image is too bright, darken it
@@ -100,8 +104,8 @@ draw.text((x, y), text, fill=color, font=font)
 # Draw day index text
 text = f"Day #{nb_days}"
 text_bbox = draw.textbbox((0, 0), text, font=small_font)
-x = (blurred_image.width - text_bbox[2]) / 2
-y = text_bbox[3] - padding
+x =  padding
+y = (blurred_image.height - text_bbox[3]) - padding
 draw.text((x, y), text, fill=color, font=small_font)
 
 # Draw last update text
