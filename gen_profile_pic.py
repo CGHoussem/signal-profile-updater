@@ -59,27 +59,28 @@ bottom = (h + size) / 2
 cropped_img = original_img.crop((left, top, right, bottom))
 cropped_img = cropped_img.resize(size=(500, 500), resample=Image.Resampling.BICUBIC)
 
-## blur image
-blurred_image = cropped_img.filter(ImageFilter.GaussianBlur(radius=2))
+# crop a section from the image where to place text
+text_crop_img = cropped_img.crop((50, 150, 450, 350))
+# blur the cropped section
+text_crop_img = text_crop_img.filter(ImageFilter.GaussianBlur(radius=4))
+# darken the cropped section
+brightness = ImageStat.Stat(text_crop_img.convert("L")).mean[0]
+enhancer = ImageEnhance.Brightness(text_crop_img)
+factor = 75 / brightness
+text_crop_img = enhancer.enhance(factor)
 
-# Check if the image is too bright
-brightness_threshold = 100
-brightness = ImageStat.Stat(blurred_image.convert("L")).mean[0]
-if brightness > brightness_threshold:
-    # If the image is too bright, darken it
-    enhancer = ImageEnhance.Brightness(blurred_image)
-    factor = brightness_threshold / brightness
-    blurred_image = enhancer.enhance(factor)
-
+# draw text on the cropped section
 ## generate text
 today = datetime.datetime.today()
 date_string = today.strftime('%Y-%m-%d %H:%M:%S')
-print(today)
 print(date_string)
 nb_days = (today - datetime.datetime(2023, 5, 7)).days + 1
 
+draw_on_image = text_crop_img
+
 ## draw texts into image
-draw = ImageDraw.Draw(blurred_image)
+draw = ImageDraw.Draw(draw_on_image)
+draw_extra = ImageDraw.Draw(cropped_img)
 color = (255, 255, 255)
 outline_color = (0, 0, 0)
 padding = 10
@@ -92,8 +93,8 @@ signature_font = ImageFont.truetype("./fonts/Sunday April.ttf", size=42)
 # Draw the text with an outline
 text = chosen_word
 text_bbox = draw.textbbox((0, 0), text, font=font)
-x = (blurred_image.width - text_bbox[2]) / 2
-y = (blurred_image.height - text_bbox[3]) / 2 - 16
+x = (draw_on_image.width - text_bbox[2]) / 2
+y = (draw_on_image.height - text_bbox[3]) / 2 - 16
 outline_thickness = 2
 for x_offset in range(-outline_thickness, outline_thickness + 1):
     for y_offset in range(-outline_thickness, outline_thickness + 1):
@@ -101,27 +102,40 @@ for x_offset in range(-outline_thickness, outline_thickness + 1):
             draw.text((x + x_offset, y + y_offset), text, font=font, fill=outline_color)
 draw.text((x, y), text, fill=color, font=font)
 
+# Draw last update text
+text = f"Last Update: {date_string}"
+text_bbox = draw.textbbox((0, 0), text, font=small_font)
+x = (draw_on_image.width - text_bbox[2]) / 2
+y = (draw_on_image.height - text_bbox[3]) / 2 + 50 - 16
+draw.text((x, y), text, fill=color, font=small_font)
+
 # Draw day index text
 text = f"Day #{nb_days}"
 text_bbox = draw.textbbox((0, 0), text, font=small_font)
 x =  padding
-y = (blurred_image.height - text_bbox[3]) - padding
-draw.text((x, y), text, fill=color, font=small_font)
-
-# Draw last update text
-text = f"Last Update: {date_string}"
-text_bbox = draw.textbbox((0, 0), text, font=small_font)
-x = (blurred_image.width - text_bbox[2]) / 2
-y = (blurred_image.height - text_bbox[3]) / 2 + 50 - 16
-draw.text((x, y), text, fill=color, font=small_font)
+y = (cropped_img.height - text_bbox[3]) - padding
+outline_thickness = 1
+for x_offset in range(-outline_thickness, outline_thickness + 1):
+    for y_offset in range(-outline_thickness, outline_thickness + 1):
+        if x_offset != 0 or y_offset != 0:
+            draw_extra.text((x + x_offset, y + y_offset), text, font=small_font, fill=outline_color)
+draw_extra.text((x, y), text, fill=color, font=small_font)
 
 # Draw signature text
 text = "PxHoussem"
 text_bbox = draw.textbbox((0, 0), text, font=signature_font)
+x = (cropped_img.width - text_bbox[2]) - padding
+y = (cropped_img.height - text_bbox[3]) - padding
+outline_thickness = 1
+for x_offset in range(-outline_thickness, outline_thickness + 1):
+    for y_offset in range(-outline_thickness, outline_thickness + 1):
+        if x_offset != 0 or y_offset != 0:
+            draw_extra.text((x + x_offset, y + y_offset), text, font=signature_font, fill=outline_color)
+draw_extra.text((x, y), text, fill=color, font=signature_font)
 
-x = (blurred_image.width - text_bbox[2]) - padding
-y = (blurred_image.height - text_bbox[3]) - padding
-draw.text((x, y), text, fill=color, font=signature_font)
+# place back the cropped section into theimage
+cropped_img.paste(draw_on_image, (50, 150))
 
 ## save image
-blurred_image.save("final_image.jpg")
+draw_on_image.save("draw_on_image.jpg")
+cropped_img.save("big_cropped_image.jpg")
