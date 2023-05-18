@@ -12,7 +12,7 @@ headers = {
     "Content-Type": "application/json",
     "accept": "application/json",
 }
-filename = "final_image.jpg"
+filename = "result.jpg"
 if not os.path.exists(filename):
     print(f"{filename} doesn't exist!")
     exit(1)

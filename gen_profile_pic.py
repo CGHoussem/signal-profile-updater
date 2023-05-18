@@ -137,5 +137,5 @@ draw_extra.text((x, y), text, fill=color, font=signature_font)
 cropped_img.paste(draw_on_image, (50, 150))
 
 ## save image
-draw_on_image.save("draw_on_image.jpg")
-cropped_img.save("big_cropped_image.jpg")
+#draw_on_image.save("draw_on_image.jpg")
+cropped_img.save("result.jpg")
