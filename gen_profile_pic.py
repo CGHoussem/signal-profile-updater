@@ -4,7 +4,11 @@ from PIL import Image, ImageFilter, ImageEnhance, ImageDraw, ImageFont, ImageSta
 from io import BytesIO
 import datetime
 import random 
+import logging
 
+logging.basicConfig(filename='data/log.txt', level=logging.INFO)
+
+FILENAME = f"data/{datetime.date.today()}.jpg"
 WORD_LIST = ("Love", "Allah", "Alhamdulillah", "Islam", "Peace", "Fake World", "AI", "Deception", "Houssem",
              "Rym", "Chastity", "Respect", "Clarity", "Achieve", "Persistence", "Truth", "Family",
              "Determination", "Passion", "Positivity", "Patience", "Strength", "Confidence", "Wealth",
@@ -32,20 +36,18 @@ params = {
 }
 # request to get a random photo
 req_res = requests.get(url, params=params, headers=headers)
-print(f"Request a random photo status code : {req_res.status_code}")
 if req_res.status_code != 200:
-    print(req_res.reason)
+    logging.error(f'Error making GET request to get random image: {req_res.reason}')
     exit(1)
 
 result = req_res.json()
 image_url = result['urls']['small']
-print(f"Image URL: {image_url}")
+logging.info(f"Image URL: {image_url}")
 
 ## crop image
 req_res = requests.get(image_url)
-print(f"Get image request status code : {req_res.status_code}")
 if req_res.status_code != 200:
-    print(req_res.reason)
+    logging.error(f'Error making GET request to download image: {req_res.reason}')
     exit(1)
 
 img_bytes = BytesIO(req_res.content)
@@ -73,7 +75,7 @@ text_crop_img = enhancer.enhance(factor)
 ## generate text
 today = datetime.datetime.today()
 date_string = today.strftime('%Y-%m-%d %H:%M:%S')
-print(date_string)
+logging.info(date_string)
 nb_days = (today - datetime.datetime(2023, 5, 7)).days + 1
 
 draw_on_image = text_crop_img
@@ -137,5 +139,4 @@ draw_extra.text((x, y), text, fill=color, font=signature_font)
 cropped_img.paste(draw_on_image, (50, 150))
 
 ## save image
-#draw_on_image.save("draw_on_image.jpg")
-cropped_img.save("result.jpg")
+cropped_img.save(FILENAME)
