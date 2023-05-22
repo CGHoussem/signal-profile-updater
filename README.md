@@ -24,6 +24,7 @@ docker run \
 	-e IP_ADDRESS=$IP_ADDRESS \
 	-e PORT=$PORT \
 	-e PHONE_NUMBER=$PHONE_NUMBER \
+	-v "local-dir-path:/app/data" \
 	--name profile_updater --rm signal_profile_updater
 ```
 
