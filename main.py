@@ -1,5 +1,10 @@
 import subprocess
 import time
+import logging
+from datetime import datetime
+
+logging.basicConfig(filename="data/log.txt")
+logging.info(f"{datetime.now()}")
 
 subprocess.run([
     'python',
@@ -12,3 +17,5 @@ subprocess.run([
     'python',
     'update_profile.py'
 ])
+
+logging.info("----------")

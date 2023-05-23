@@ -6,7 +6,7 @@ import datetime
 import random 
 import logging
 
-logging.basicConfig(filename='data/log.txt', level=logging.INFO)
+logging.basicConfig(filename='data/log.txt')
 
 FILENAME = f"data/{datetime.date.today()}.jpg"
 WORD_LIST = ("Love", "Allah", "Alhamdulillah", "Islam", "Peace", "Fake World", "AI", "Deception", "Houssem",
@@ -42,7 +42,7 @@ if req_res.status_code != 200:
 
 result = req_res.json()
 image_url = result['urls']['small']
-logging.info(f"Image URL: {image_url}")
+logging.info(f"Chosen image URL: {image_url}")
 
 ## crop image
 req_res = requests.get(image_url)

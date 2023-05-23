@@ -4,9 +4,9 @@ import base64
 import datetime
 import logging
 
-logging.basicConfig(filename='data/log.txt', level=logging.INFO)
+logging.basicConfig(filename='data/log.txt')
 
-FILENAME = "data/{datetime.date.today()}.jpg"
+FILENAME = f"data/{datetime.date.today()}.jpg"
 
 IP_ADDR = os.environ.get("IP_ADDRESS")
 PORT = os.environ.get("PORT", "8080")
@@ -18,12 +18,12 @@ headers = {
     "Content-Type": "application/json",
     "accept": "application/json",
 }
-if not os.path.exists(filename):
-    logging.error(f"{filename} doesn't exist!")
+if not os.path.exists(FILENAME):
+    logging.error(f"{FILENAME} doesn't exist!")
     exit(1)
 
 encoded_string = ""
-with open(filename, "rb") as f:
+with open(FILENAME, "rb") as f:
     encoded_string = base64.b64encode(f.read())
 
 data = {
@@ -34,3 +34,5 @@ req_res = requests.put(url, headers=headers, json=data)
 if req_res.status_code != 204:
     logging.error(f'Error making PUT request: {req_res.reason}')
     exit(1)
+
+logging.info("Profile has been updated")
