@@ -14,7 +14,7 @@ WORD_LIST = ("Love", "Allah", "Alhamdulillah", "Islam", "Peace", "Fake World", "
              "Determination", "Passion", "Positivity", "Patience", "Strength", "Confidence", "Wealth",
              "Heaven", "Honor", "Hell", "Intelligence", "Creativity", "Righteousness", "Knowledge", "Wisdom",
              "Majesty", "Mindfulness", "Resilience", "Sincerity", "Culture", "Death", "Destiny",
-             "Timeless", "The End", "Endless", "Darkness", "Children", "Mistery", "Battlefield")
+             "Timeless", "The End", "Endless", "Darkness", "Children", "Mystery", "Battlefield")
 chosen_word = random.choice(WORD_LIST)
 
 ## get an image from unsplash
