@@ -4,7 +4,7 @@ import base64
 import datetime
 import logging
 
-logging.basicConfig(filename='data/log.txt')
+logging.basicConfig(filename='data/log.txt', level=logging.DEBUG)
 
 FILENAME = f"data/{datetime.date.today()}.jpg"
 

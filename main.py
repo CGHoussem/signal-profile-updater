@@ -3,7 +3,7 @@ import time
 import logging
 from datetime import datetime
 
-logging.basicConfig(filename="data/log.txt")
+logging.basicConfig(filename="data/log.txt", level=logging.DEBUG)
 logging.info(f"{datetime.now()}")
 
 subprocess.run([

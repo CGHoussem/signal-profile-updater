@@ -6,7 +6,7 @@ import datetime
 import random 
 import logging
 
-logging.basicConfig(filename='data/log.txt')
+logging.basicConfig(filename='data/log.txt', level=logging.DEBUG)
 
 FILENAME = f"data/{datetime.date.today()}.jpg"
 WORD_LIST = ("Love", "Allah", "Alhamdulillah", "Islam", "Peace", "Fake World", "AI", "Deception", "Houssem",
